@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Big Bend, under the Milky Way</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400;0,500;1,400&family=Zilla+Slab:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --night:#0d1224; --night-2:#1a2140; --dusk:#5e4d63; --caliche:#ece4d3; --ink:#262033;
+  --ochre:#d2a24c; --agave:#7f937b; --muted:#6a6273; --line:#cfc4ae;
+  --bg:var(--caliche); --fg:var(--ink); --card:#f6f0e3;
+  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){ --bg:#141a30; --fg:#e9e2d2; --card:#1c2442; --muted:#a79fb0; --line:#343d63; } }
+:root[data-theme="dark"]{ --bg:#141a30; --fg:#e9e2d2; --card:#1c2442; --muted:#a79fb0; --line:#343d63; }
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--fg);font:400 1.125rem/1.6 Alegreya,Georgia,"Times New Roman",serif}
+h1,h2,h3{font-family:"Zilla Slab",Rockwell,"Roboto Slab",Georgia,serif;font-weight:700;line-height:1.1;margin:0}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--ochre);outline-offset:3px}
+
+/* hero sky */
+.sky{position:relative;min-height:100svh;background:var(--night);color:#efe8d8;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end}
+.sky canvas{position:absolute;inset:0;width:100%;height:100%}
+.sky-copy{position:relative;padding:0 1.5rem 2rem;max-width:40rem}
+.sky h1{font-size:clamp(2.4rem,9vw,5rem);letter-spacing:-.01em;text-wrap:balance}
+.sky p{max-width:32rem;font-size:1.2rem;color:#d9d0bf}
+.dial{position:relative;margin:0 1.5rem 2.25rem;max-width:34rem;background:rgba(13,18,36,.55);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);border:1px solid rgba(239,232,216,.18);border-radius:14px;padding:1rem 1.1rem}
+.dial-row{display:flex;justify-content:space-between;align-items:baseline;gap:1rem}
+.dial strong{font-family:"Zilla Slab",Georgia,serif;font-size:1.35rem}
+.dial small{color:#c7bda9;font-size:.95rem}
+input[type=range]{width:100%;margin:.8rem 0 .3rem;accent-color:var(--ochre);height:28px}
+.ticks{display:flex;justify-content:space-between;font-size:.85rem;color:#b3a992}
+
+/* body */
+main{max-width:46rem;margin:0 auto;padding:0 1.5rem}
+section{padding:4rem 0 1rem}
+h2{font-size:clamp(1.8rem,5vw,2.6rem);margin-bottom:1rem}
+.lede{font-size:1.25rem}
+.here{display:grid;grid-template-columns:minmax(0,11rem) 1fr;gap:1.5rem;align-items:end}
+.here img{width:100%;border-radius:6px;display:block}
+.here figcaption{font-size:.95rem;color:var(--muted);margin-top:.4rem;font-style:italic}
+@media (max-width:560px){.here{grid-template-columns:1fr}.here img{max-height:22rem;object-fit:cover}}
+
+.options{display:grid;gap:1.25rem;margin-top:1.5rem}
+.opt{border:1px solid var(--line);border-radius:10px;padding:1.25rem 1.3rem;background:var(--card)}
+.opt.pick{border:2px solid var(--ochre)}
+.opt h3{font-size:1.45rem;margin-bottom:.25rem}
+.opt .when{color:var(--muted);margin:0 0 .75rem}
+.tradeoff{display:grid;grid-template-columns:1fr 1fr;gap:1rem;font-size:1rem}
+.tradeoff b{display:block;font-family:"Zilla Slab",Georgia,serif;font-weight:500;margin-bottom:.15rem}
+@media (max-width:520px){.tradeoff{grid-template-columns:1fr}}
+.opt button{margin-top:1rem;font:500 1.05rem "Zilla Slab",Georgia,serif;padding:.7rem 1.1rem;border-radius:8px;border:0;background:var(--night-2);color:#f1ead9;cursor:pointer}
+.opt.pick button{background:var(--ochre);color:#1d1726}
+.answer{display:none;margin-top:1.25rem;padding:1.25rem;border-radius:10px;background:var(--night);color:#efe8d8;font-size:1.2rem}
+.answer.show{display:block}
+
+ol.days{list-style:none;padding:0;margin:1.5rem 0 0;counter-reset:d}
+ol.days>li{counter-increment:d;position:relative;padding:0 0 1.75rem 3.2rem;border-left:2px solid var(--line);margin-left:1.1rem}
+ol.days>li:last-child{border-left-color:transparent}
+ol.days>li::before{content:counter(d);position:absolute;left:-1.15rem;top:-.2rem;width:2.2rem;height:2.2rem;border-radius:50%;background:var(--night-2);color:#f1ead9;display:grid;place-items:center;font:700 1.05rem "Zilla Slab",Georgia,serif}
+ol.days h3{font-size:1.3rem;margin-bottom:.35rem}
+ol.days ul{margin:.25rem 0 0;padding-left:1.1rem}
+ol.days ul li{margin:.2rem 0}
+
+.sky-guide{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem}
+.sky-guide div{border-top:2px solid var(--agave);padding-top:.6rem}
+.sky-guide h3{font-size:1.15rem;margin-bottom:.3rem}
+@media (max-width:560px){.sky-guide{grid-template-columns:1fr}}
+.pack{columns:2;column-gap:2rem;padding-left:1.1rem}
+.pack li{break-inside:avoid;margin:.25rem 0}
+@media (max-width:520px){.pack{columns:1}}
+footer{max-width:46rem;margin:3rem auto 0;padding:2rem 1.5rem 3rem;color:var(--muted);font-size:.95rem;border-top:1px solid var(--line)}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<header class="sky" aria-label="Night sky preview">
+  <canvas id="sky" aria-hidden="true"></canvas>
+  <div class="sky-copy">
+    <h1 id="hello">The moon is hogging the sky tonight.</h1>
+    <p>From the lake shore you can count the stars on one hand. Nine hours west, in Big Bend, you won't be able to count them at all. Slide the moon out of the way and see.</p>
+  </div>
+  <div class="dial">
+    <div class="dial-row"><strong id="d-date">Sun, Sep 27</strong><small id="d-moon">Moon 100% lit</small></div>
+    <input id="slider" type="range" min="0" max="14" step="1" value="0" aria-label="Pick a night between Sep 27 and Oct 11">
+    <div class="ticks"><span>Tonight</span><span>Oct 3</span><span>Oct 10 new moon</span></div>
+    <small id="d-note" style="display:block;margin-top:.4rem">Full moon. Up all night, Milky Way washed out.</small>
+  </div>
+</header>
+
+<main>
+  <section>
+    <div class="here">
+      <figure style="margin:0">
+        <img src="data:image/jpeg;base64,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" alt="Full moon behind thin cloud over a dark lake, city glow on the horizon" width="900" height="1200">
+        <figcaption>Right now, Cottonwood Park.</figcaption>
+      </figure>
+      <div>
+        <h2>Come to Big Bend with me.</h2>
+        <p class="lede">One of the darkest skies in the lower 48, a day's drive from where we're standing. Tents, canyons, the Rio Grande, and the Milky Way bright enough to cast a shadow.</p>
+        <p>Car, gear and power are covered. You bring a jacket and a yes.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Two ways to do it</h2>
+    <p>Being honest about the sky: the moon you're looking at is full, and it decides what we'll see.</p>
+    <div class="options">
+      <article class="opt pick">
+        <h3>New-moon weekend</h3>
+        <p class="when">Leave Fri, Oct 9 before dawn, back Sun night, Oct 11</p>
+        <div class="tradeoff">
+          <div><b>You get</b>The darkest nights of the month. Milky Way core low in the southwest after dusk, the band arching overhead until late, Andromeda visible by eye.</div>
+          <div><b>You give up</b>Twelve days of waiting. In October the bright core sets by roughly 9:30 pm, so the first two hours after dark matter most.</div>
+        </div>
+        <button type="button" data-a="oct">I'm in for Oct 9</button>
+      </article>
+      <article class="opt">
+        <h3>Right now, no planning</h3>
+        <p class="when">Leave tomorrow morning, two nights in the park</p>
+        <div class="tradeoff">
+          <div><b>You get</b>Pure spontaneity. Moonlit canyon hikes without headlamps, silver light on the Chisos, hot springs under a bright sky.</div>
+          <div><b>You give up</b>The Milky Way. The moon is still over 90% lit and up most of the night, so we'd see bright stars only.</div>
+        </div>
+        <button type="button" data-a="now">I'm in for tomorrow</button>
+      </article>
+    </div>
+    <div class="answer" id="answer" role="status"></div>
+  </section>
+
+  <section>
+    <h2>The weekend, roughly</h2>
+    <p>Built around the new-moon option. About 540 miles each way from Dallas, roughly 9 hours with stops. Most of the park has no cell signal.</p>
+    <ol class="days">
+      <li><h3>Friday: drive and first dark</h3>
+        <ul>
+          <li>Roll out around 4:30 am. I-20 west, then south through Fort Stockton and Marathon.</li>
+          <li>Into the park early afternoon, pay entry at the gate, set up camp.</li>
+          <li>Sunset at Santa Elena Canyon, then camp at Cottonwood Campground. Cottonwood Park to Cottonwood Campground, fitting.</li>
+          <li>Milky Way session right after twilight while the core is still up.</li>
+        </ul></li>
+      <li><h3>Saturday: mountains, river, darkest night</h3>
+        <ul>
+          <li>Lost Mine Trail in the Chisos in the morning while it's cool.</li>
+          <li>Afternoon soak at the hot springs by the Rio Grande.</li>
+          <li>New moon night. Tripod out, lights off, stay up as long as we can.</li>
+        </ul></li>
+      <li><h3>Sunday: sunrise and home</h3>
+        <ul>
+          <li>Sunrise over the Sierra del Carmen from Boquillas Canyon overlook.</li>
+          <li>Pack up by 9, back in Dallas by evening.</li>
+        </ul></li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>What we'll be looking at</h2>
+    <div class="sky-guide">
+      <div><h3>Milky Way core</h3><p>Low in the southwest just after dark, toward Sagittarius. Catch it early; it sets through the evening.</p></div>
+      <div><h3>The band overhead</h3><p>Runs through the Summer Triangle straight over camp for most of the night.</p></div>
+      <div><h3>Andromeda Galaxy</h3><p>A faint oval smudge in the northeast by mid-evening, 2.5 million light-years away, no telescope needed.</p></div>
+      <div><h3>Photo settings</h3><p>Phone: night mode on a tripod, longest exposure. Camera: widest lens, f/2.8, ISO 3200, 15 to 20 seconds.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Handled, and what to bring</h2>
+    <p>Covered: the drive in the HR-V, tents and camp kitchen, and an Anker SOLIX power station with solar so phones and cameras stay charged off-grid.</p>
+    <ul class="pack">
+      <li>Warm layer; desert nights cool off fast after sunset</li>
+      <li>Headlamp with a red-light mode</li>
+      <li>Two big water bottles</li>
+      <li>Hiking shoes and a hat</li>
+      <li>ID</li>
+      <li>Snacks you'll fight me over</li>
+    </ul>
+  </section>
+</main>
+
+<footer>Made on the shore at Cottonwood Park, under a very inconvenient full moon.</footer>
+
+<script>
+(function(){
+  // personalize: ?name=Alex
+  var name = new URLSearchParams(location.search).get('name');
+  if(name){ name = name.trim().split(/\s+/)[0].slice(0,24);
+    document.getElementById('hello').textContent = name + ', the moon is hogging the sky tonight.';
+    document.title = name + ', Big Bend under the Milky Way';
+  }
+
+  // answers
+  var ans = document.getElementById('answer');
+  document.querySelectorAll('.opt button').forEach(function(b){
+    b.addEventListener('click', function(){
+      ans.textContent = b.dataset.a === 'oct'
+        ? 'Done. Friday, October 9, 4:30 am, darkest sky of the month. Hand the phone back and shake on it.'
+        : 'Done. We leave tomorrow morning. Moonlit canyons now, Milky Way rematch on the next new moon. Hand the phone back.';
+      ans.classList.add('show');
+    });
+  });
+
+  // sky
+  var cv = document.getElementById('sky'), ctx = cv.getContext('2d');
+  var slider = document.getElementById('slider');
+  var W, H, DPR, stars = [], band = [], seed = 7;
+  function rnd(){ seed = (seed*16807)%2147483647; return (seed-1)/2147483646; }
+  function gauss(){ return (rnd()+rnd()+rnd()+rnd()-2)/2; }
+  function build(){
+    seed = 7; stars = []; band = [];
+    var area = W*H/DPR/DPR, n = Math.min(1600, area/260);
+    for(var i=0;i<n;i++) stars.push({x:rnd(),y:rnd()*0.8,m:Math.pow(rnd(),3)});
+    for(var j=0;j<Math.min(4200,area/70);j++){
+      var t = rnd(), off = gauss()*0.09;
+      // band from lower-left horizon arching up to upper-right
+      var bx = 0.15 + t*0.9 + off*0.6, by = 0.78 - t*0.85 + off;
+      band.push({x:bx,y:by,m:Math.pow(rnd(),5),t:t});
+    }
+  }
+  function resize(){
+    DPR = Math.min(2, window.devicePixelRatio||1);
+    W = cv.width = cv.clientWidth*DPR; H = cv.height = cv.clientHeight*DPR; build(); draw();
+  }
+  function illum(d){ return (1+Math.cos(2*Math.PI*d/29.53))/2; }
+  function lerp(a,b,t){return a+(b-a)*t}
+  function draw(){
+    var d = +slider.value, il = illum(d);
+    // waning moon rises later; a dark window opens after dusk
+    var riseH = 19.5 + d*0.83; // rough, local clock hours
+    var wash = il * (d>2 ? 0.55 : 1);
+    var g = ctx.createLinearGradient(0,0,0,H);
+    g.addColorStop(0,'rgb('+lerp(13,52,wash)+','+lerp(18,64,wash)+','+lerp(36,96,wash)+')');
+    g.addColorStop(0.75,'rgb('+lerp(24,92,wash)+','+lerp(28,90,wash)+','+lerp(52,112,wash)+')');
+    g.addColorStop(1,'rgb('+lerp(40,110,wash)+','+lerp(34,96,wash)+','+lerp(52,104,wash)+')');
+    ctx.fillStyle = g; ctx.fillRect(0,0,W,H);
+
+    var vis = Math.max(0, 1 - wash*1.15);
+    // milky way glow
+    if(vis>0.02){
+      for(var k=0;k<14;k++){
+        var t=k/13, cx=(0.15+t*0.9)*W, cy=(0.78-t*0.85)*H, r=Math.max(W,H)*(0.13+0.08*Math.sin(t*3));
+        var rg=ctx.createRadialGradient(cx,cy,0,cx,cy,r);
+        var a=0.10*vis*(1.3-t*0.7);
+        rg.addColorStop(0,'rgba(232,214,190,'+a+')'); rg.addColorStop(1,'rgba(232,214,190,0)');
+        ctx.fillStyle=rg; ctx.fillRect(0,0,W,H);
+      }
+      // dust lane
+      ctx.save(); ctx.globalAlpha=0.35*vis; ctx.strokeStyle='rgba(10,12,26,1)'; ctx.lineWidth=Math.max(W,H)*0.02; ctx.filter='blur('+(12*DPR)+'px)';
+      ctx.beginPath(); ctx.moveTo(0.1*W,0.84*H); ctx.quadraticCurveTo(0.55*W,0.42*H,1.05*W,-0.05*H); ctx.stroke(); ctx.restore();
+      for(var b=0;b<band.length;b++){ var s=band[b], a2=vis*(0.25+s.m*0.75);
+        ctx.fillStyle='rgba(255,246,230,'+a2+')'; ctx.fillRect(s.x*W,s.y*H,DPR*(0.6+s.m),DPR*(0.6+s.m)); }
+    }
+    // field stars; faint ones vanish under moonlight
+    for(var i=0;i<stars.length;i++){ var st=stars[i];
+      var a3 = (st.m + 0.08) * 1.4 - wash*1.35; if(a3<=0) continue;
+      ctx.fillStyle='rgba(255,250,240,'+Math.min(1,a3)+')';
+      var sz=DPR*(0.7+st.m*1.8); ctx.beginPath(); ctx.arc(st.x*W,st.y*H,sz/2,0,6.283); ctx.fill(); }
+    // moon (phase-shaped) with glow
+    if(il>0.06){
+      var mx=W*0.78, my=H*0.16, mr=Math.min(W,H)*0.035;
+      var mg=ctx.createRadialGradient(mx,my,mr,mx,my,mr*14);
+      mg.addColorStop(0,'rgba(255,240,210,'+0.35*il+')'); mg.addColorStop(1,'rgba(255,240,210,0)');
+      ctx.fillStyle=mg; ctx.fillRect(0,0,W,H);
+      ctx.save(); ctx.beginPath(); ctx.arc(mx,my,mr,0,6.283); ctx.clip();
+      ctx.fillStyle='#fff3da'; ctx.fillRect(mx-mr,my-mr,mr*2,mr*2);
+      // waning: shadow grows from the right
+      var k2 = 1-2*il; ctx.fillStyle='rgba(20,26,50,0.96)';
+      ctx.beginPath(); ctx.arc(mx,my,mr,-Math.PI/2,Math.PI/2,false);
+      ctx.ellipse(mx,my,Math.abs(k2)*mr,mr,0,Math.PI/2,-Math.PI/2,k2<0); ctx.fill(); ctx.restore();
+    }
+    // Chisos-style horizon silhouette
+    ctx.fillStyle='#07091a'; ctx.beginPath(); ctx.moveTo(0,H);
+    var pts=[[0,.86],[.08,.84],[.16,.80],[.22,.74],[.27,.77],[.33,.70],[.38,.72],[.44,.78],[.52,.80],[.6,.76],[.66,.71],[.7,.73],[.76,.79],[.85,.82],[.93,.81],[1,.84]];
+    pts.forEach(function(p){ctx.lineTo(p[0]*W,p[1]*H)}); ctx.lineTo(W,H); ctx.closePath(); ctx.fill();
+
+    // labels
+    var date = new Date(2026,8,27+d);
+    document.getElementById('d-date').textContent = date.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
+    document.getElementById('d-moon').textContent = 'Moon ' + Math.round(il*100) + '% lit';
+    var note;
+    if(d<=1) note='Full moon. Up all night, Milky Way washed out.';
+    else if(il>0.35){ var h=((riseH%24)+24)%24, hh=Math.floor(h), mm=Math.round((h-hh)*60/15)*15; if(mm===60){hh++;mm=0}
+      var lab=(hh%12||12)+':'+(mm<10?'0':'')+mm+(hh%24<12?' am':' pm');
+      note='Moon rises around '+lab+'. A short dark window after dusk, then it takes over.'; }
+    else if(d<12) note='Moon rises late and thin. Most of the night is dark.';
+    else note='New moon weekend. Darkest sky of the month. This is the one.';
+    document.getElementById('d-note').textContent = note;
+  }
+  slider.addEventListener('input', draw);
+  window.addEventListener('resize', resize);
+  resize();
+})();
+</script>
+</body>
+</html>
